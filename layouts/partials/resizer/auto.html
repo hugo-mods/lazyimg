@@ -1,0 +1,35 @@
+{{/* Input: Params. Output: dict {"default": RESOURCE, "lqip": RESOURCE, "responsive": [RESOURCE, ...]} */}}
+
+{{ $res := .img }}
+{{ $resizeOptions := .resizeoptions }}
+{{ $sizes := .responsivesizes }}
+
+{{ $imageDict := partial "resizer/simple" . }}
+{{ $default := $imageDict.default }}
+{{ $name := replace (path.Base ($res.Permalink)) (path.Ext $res.Name) "" }}
+
+{{/* Responsive img sizing from LQIP width to default width */}}
+{{ $startWidth := (default 100 $imageDict.lqip.Width) }}
+{{ $sizes := seq $startWidth 50 $imageDict.default.Width }}
+{{ $n := 5 }}
+{{ if gt $n (len $sizes) -}}
+    {{ $n = len $sizes }}
+{{- end }}
+{{/* Partition the sizes */}}
+{{ $part := int (div (len $sizes) $n) }}
+{{ $wset := slice }}
+{{ range (seq 1 (sub $n 1)) -}}
+    {{ $wset = append (index $sizes (mul $part .)) $wset }}
+{{- end }}
+{{ $wset = (uniq (append (int $imageDict.default.Width) $wset)) }}
+
+{{/* Fill responsive slice: */}}
+{{ $responsive := slice }}
+{{ $break := false }}
+{{- range $wset -}}
+    {{- $resized := $res.Resize (printf "%dx %s" . $resizeOptions) -}}
+    {{- $resized := slice $resized | resources.Concat (printf "%s-%dx%s" $name . (path.Ext $default.Permalink)) -}} 
+    {{- $responsive = append $resized $responsive -}}
+{{- end -}}
+
+{{- return merge (dict "responsive" $responsive) $imageDict -}}

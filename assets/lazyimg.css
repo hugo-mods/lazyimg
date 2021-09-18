@@ -1,0 +1,20 @@
+/* Hides images to be loaded with JS when it is disabled */
+.no-js img.lazyload {
+  display: none;
+}
+
+/* Hides broken image icon which may shortly be disaplayed on load */
+img.lazyload:not([src]) {
+	visibility: hidden;
+}
+
+/* Simple blur-up animation */
+.blur-up {
+  -webkit-filter: blur(3px);
+  filter: blur(3px);
+  transition: filter 500ms, -webkit-filter 500ms;
+}
+.blur-up.lazyloaded {
+  -webkit-filter: blur(0);
+  filter: blur(0);
+}

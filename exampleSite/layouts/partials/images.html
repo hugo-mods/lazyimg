@@ -1,0 +1,7 @@
+<!-- Create different versions of example image to demonstrate lazy-loading: -->
+{{ $images := slice }}
+{{ range seq 10 -}}
+    {{ $img := resources.Get "alps.jpg" | images.Filter (images.Hue (add -180 (mul . 36))) }}
+    {{ $images = append $img $images }}
+{{- end }}
+{{ return $images }}

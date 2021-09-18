@@ -1,0 +1,15 @@
+Params:
+  lazyimg:
+    # TODO(kdevo): provide sensible defaults
+
+module:
+  hugoVersion:
+    extended: true
+    # needed for webp support and mutli-line dicts:
+    min: "0.82.0"  # TODO(kdevo): raise to 0.83.0
+    max: "1.00.0"
+  imports:
+  - path: "github.com/aFarkas/lazysizes"
+    mounts:
+    - source: "./"
+      target: "assets/lazyimg/lazysizes"

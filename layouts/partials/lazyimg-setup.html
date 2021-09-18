@@ -1,0 +1,6 @@
+{{- $lsPath := "lazyimg/lazysizes/lazysizes.min.js" -}}
+{{- with (resources.Get $lsPath) -}}
+    <script src="{{ .Permalink }}" async></script>
+{{- else -}}
+    {{ errorf "could not locate %s" $lsPath }}
+{{- end }}

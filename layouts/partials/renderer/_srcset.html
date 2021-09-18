@@ -1,0 +1,8 @@
+{{/* Input: Input: dict {"responsive": [RESOURCE, ...]}. Output: srcset string */}}
+
+{{ $images := .responsive }}
+{{ $srcset := slice }}
+{{ range $images }}
+    {{ $srcset = append (printf "%s %dw" .Permalink .Width) $srcset }}
+{{ end }}
+{{ return  (delimit $srcset ",\n") }}

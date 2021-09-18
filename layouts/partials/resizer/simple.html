@@ -1,0 +1,16 @@
+{{/* Input: Params. Output: dict {"default": RESOURCE, "lqip": RESOURCE} */}}
+
+{{ $res := .img }}
+{{ $maxSize := .maxsize }}
+{{ $lqipSize := .lqipsize }}
+{{ $resizeOptions := .resizeoptions }}
+
+{{ $name := replace (path.Base ($res.Permalink)) (path.Ext $res.Name) "" }}
+
+{{/* Resize base images */}}
+{{ $lqip := $res.Resize (printf "%s %s" $lqipSize $resizeOptions ) }}
+{{ $lqip := slice $lqip | resources.Concat (printf "%s-%s%s" $name $lqipSize (path.Ext $lqip.Permalink)) }} 
+{{ $default := $res.Resize (printf "%s %s" $maxSize $resizeOptions) }}
+{{ $default := slice $default | resources.Concat (printf "%s-%s%s" $name $maxSize (path.Ext $default.Permalink)) }} 
+
+{{ return dict "lqip" $lqip "default" $default }}

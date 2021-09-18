@@ -1,0 +1,32 @@
+{{/* Parameter Parsing */}}
+{{ $usage := `lazyimg:
+    Usage like:
+    - {{ partial "lazyimg" "image.jpg" }}
+    - {{ partial "lazyimg" (resources.Get "image.jpg") }}
+
+    ...or more verbose by specifying a dict overriding the site.Params.lazyimg, e.g.:
+    - {{ partial "lazyimg" (dict "resizer" "auto" "renderer" "lqip") }}
+    - {{ partial "lazyimg" (dict "img" "image.jpg" "responsiveSizes" (slice "320px" "640px") "resizer" "responsive") }}
+
+    Please ensure that image exists in ./assets directory.
+` }}
+
+{{ $params := merge site.Params.lazyimg (dict 
+    "img" . 
+    "resizer" (default "responsive" site.Params.lazyimg.resizer) 
+    "renderer" (default "lqip" site.Params.lazyimg.renderer)
+)}}
+{{ if reflect.IsMap . }}
+    {{ $params = merge $params . }}
+{{ end }}
+{{ $resType := (printf "%T" $params.img) }}
+{{ if not (in $resType "resource") }}
+    {{ $params = merge $params (dict "img" (resources.Get $params.img)) }}
+{{ end }}
+{{ if not $params.img }}
+    {{ errorf "image path ./assets/%s does not exist" $params.img }}
+    {{ warnf $usage }}
+{{ end }}
+
+{{ $sizes := partial (printf "resizer/%s" $params.resizer) $params }}
+{{ return (partial (printf "renderer/%s" $params.renderer) (merge (dict "imgDict" $sizes) $params)) }}
