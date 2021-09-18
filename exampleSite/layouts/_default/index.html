@@ -41,10 +41,10 @@
 
 <body>
     <!-- Most basic usage with single parameter that can either be a filename or resource: -->
-    {{ partial "lazyimg" "alps.jpg" }}
+    {{ partial "lazyimg" "images/alps.jpg" }}
 
     <!-- Here we call the partial by passing a param dict that overrides the site's params: -->
-    {{ partial "lazyimg" (dict "img" "alps.jpg" "class" "my-fancy-class" "alt" "This image shows the alps" "resizer" "simple") }}
+    {{ partial "lazyimg" (dict "img" "images/alps.jpg" "class" "my-fancy-class" "alt" "This image shows the alps" "resizer" "simple") }}
 
     {{ $images := (partial "images" .) }}
     {{ range $images  -}}
