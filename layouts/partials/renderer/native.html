@@ -1,0 +1,9 @@
+{{ $class := .class }}
+{{ $alt := .alt }}
+{{ $imgDict := .imgDict }}
+
+<img src="{{ $imgDict.default.Permalink }}"
+class="{{ $class }}" loading="lazy" 
+{{- with $imgDict.default }} height="{{ .Height }}" width="{{ .Width }}" {{- end -}}
+{{- if $imgDict.responsive -}} {{ with partial "renderer/_srcset" $imgDict }} srcset="{{ . }}"{{- end }} {{- end -}}
+{{- with $alt }} alt="{{ . }}" {{- end }}>

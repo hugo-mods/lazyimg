@@ -2,14 +2,11 @@
 {{ $alt := .alt }}
 {{ $noscriptSupport := .noscript }}
 {{ $imgDict := .imgDict }}
-{{ if $noscriptSupport }}
-<noscript>
-    <!-- TODO: add responsiveness -->
-    <img src="{{ $imgDict.default.Permalink }}" {{ with $alt }} alt="{{ . }}" {{ end -}} 
-    class="{{ $class }}" loading="lazy" 
-    {{- with $imgDict.default }} height="{{ .Height }}" width="{{ .Width }}" {{ end -}}>
-</noscript>
-{{ end }}
+{{- if $noscriptSupport -}}
+    <noscript>
+        {{ partial "renderer/native" . }}
+    </noscript> 
+{{- end -}}
 <img 
 {{- with $imgDict.lqip -}}
     {{- $placeholderB64 := .Content | base64Encode -}}
@@ -24,5 +21,5 @@
     src="{{ $imgDict.default.Permalink }}" class="{{ $class }} lazyload" 
 {{- end -}}
 {{- with (default $imgDict.default $imgDict.lqip) }} height="{{ .Height }}" width="{{ .Width }}" {{- end -}}
-{{- if $imgDict.responsive -}}{{ with partial "renderer/_srcset" $imgDict }} data-sizes="auto" data-srcset="{{ . }}" {{- end }}{{- end -}}
+{{- if $imgDict.responsive -}}{{ with partial "renderer/_srcset" $imgDict }} data-sizes="auto" data-srcset="{{ . }}"{{- end }} {{- end -}}
 {{- with $alt }} alt="{{ . }}" {{- end }}>
