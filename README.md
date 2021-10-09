@@ -4,8 +4,10 @@
 ## Lazy image loading made easy. With automatic image resizing and LQIP support.
 
 - Lazy loading for images via `lazySizes`
-- No-Script-safe: Fallback to browser's native method
-- ...
+- No-Script/No-JS safe: Fallback to browser's native method
+- Image previews: Blur-up Low Quality Image Placeholder (LQIP) technique
+- Automatic responsive image [resizing](#resizers)
+- Muldiple supported [renderers](#renderers) (e.g. LQIP with WebP support)
 
 > Used by the [Osprey Delight](https://github.com/kdevo/osprey-delight) theme, which directly benefits from this module!
 
@@ -13,7 +15,9 @@
 
 Initialize [Hugo's mod system](https://gohugo.io/hugo-modules/) on your site:
 
-`hugo mod init github.com/{username}/{repo}`
+```sh
+hugo mod init github.com/{username}/{repo}
+```
 
 Add module to site's config (e.g. `config.yaml`):
 
@@ -25,7 +29,9 @@ module:
 
 Get the module (also upgrades existing one):
 
-`hugo mod get -u`
+```sh
+hugo mod get -u
+```
 
 ## Quickstart 
 
@@ -34,16 +40,25 @@ Get the module (also upgrades existing one):
 ```
 {{ partial "lazyimg-setup" }}
 ```
-3. Load the image by calling the `lazyimg` partial where you would usually use an `img` tag:
-```
-{{ partial "lazyimg" "my-awesome-image.jpeg" }}
-```
+3. Load the image:
+    - In a template file: Call the `lazyimg` partial where you would usually use an `img` tag:
+    ```
+    {{ partial "lazyimg" "awesome-image.jpeg" }}
+    ```
+    - In a content file: Call the `lazyimg` shortcode: 
+    ```
+    {{< lazyimg img="awesome-image.jpeg" >}}
+    ```
 
 For more advanced usage, please refer to the [`exampleSite`](./exampleSite) for a practical approach or continue reading the theory as described in the next section.
 
 ## Configuration
 
+See [example site's configuration file](exampleSite/config.yaml) for all options.
+
 ### Resizers
+
+Allowed values for `resizer`:
 
 | Name                        | Description
 |:----------------------------|-------------------------------------------------------------
@@ -53,10 +68,14 @@ For more advanced usage, please refer to the [`exampleSite`](./exampleSite) for 
 
 ### Renderers
 
+Allowed values for `renderer`:
+
 | Name                        | Description
 |:----------------------------|-------------------------------------------------------------
-| `lqip`                      | All-around responsive lazy-loading with LQIP blur-up preview. Recommended: [`lazyimg.css`](#CSS).
-| `lqip-webp`                 | `lqip` with additional WebP support. TODO(kdevo): not implemented yet.
+| `simple`                    | Responsive image lazy-loading.
+| `lqip`                      | Responsive image lazy-loading with LQIP blur-up preview. Use with [`lazyimg.css`](#CSS).
+| `lqip-webp`                 | Responsive image lazy-loading `lqip` with additional WebP support.
+| `native`                    | [Browser-native loading](https://web.dev/browser-level-image-lazy-loading/) via `loading="lazy"`. Does not require JS. Used as fallback when `noscript` config option is true.
 
 ### CSS
 
