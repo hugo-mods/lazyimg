@@ -1,0 +1,19 @@
+{{ $class := .class }}
+{{ $noscriptSupport := .noscript }}
+{{ $imgDict := .imgDict }}
+{{ $imgDictFallback := .imgDictFallback }}
+
+<picture>
+  <source type="image/webp" 
+    {{- with $imgDict.lqip -}}
+        {{- $placeholderB64 := .Content | base64Encode -}}
+        {{- if gt (len $placeholderB64) 2048 }}
+            srcset="{{ .Permalink }}"
+        {{- else }}
+            srcset="data:{{ .MediaType }};base64,{{ $placeholderB64 }}"
+        {{- end }}
+    {{- end -}}
+    {{- with (default $imgDict.default $imgDict.lqip) }} height="{{ .Height }}" width="{{ .Width }}" {{- end -}}
+    {{- if $imgDict.responsive -}}{{ with partial "renderer/_srcset" $imgDict }} data-sizes="auto" data-srcset="{{ . }}"{{- end }} {{- end -}}>
+    {{ partial "renderer/lqip" (merge . (dict "imgDict" $imgDictFallback)) }}
+</picture>

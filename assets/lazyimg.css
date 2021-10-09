@@ -3,6 +3,10 @@
   display: none;
 }
 
+.no-js source.lazyload {
+  display: none;
+}
+
 /* Hides broken image icon which may shortly be disaplayed on load */
 img.lazyload:not([src]) {
 	visibility: hidden;

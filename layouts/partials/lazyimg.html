@@ -28,5 +28,16 @@
     {{ warnf $usage }}
 {{ end }}
 
-{{ $sizes := partial (printf "resizer/%s" $params.resizer) $params }}
-{{ return (partial (printf "renderer/%s" $params.renderer) (merge (dict "imgDict" $sizes) $params)) }}
+{{/* Special handling for WebP renderers: */}}
+{{ if in $params.renderer "webp" }}
+    {{/* Override user-supplied target format */}}
+    {{ $resizeOptionsWebP := printf "%s webp" ($params.resizeOptions | replaceRE "(jpg|png|tif|bmp|gif)" "") }}
+    {{ $paramsWebP := merge $params (dict "resizeoptions" $resizeOptionsWebP) }}
+    {{ $imagesWebP := partial (printf "resizer/%s" $params.resizer) $paramsWebP }}
+    {{ $imagesRegular := partial (printf "resizer/%s" $params.resizer) $params }}
+    {{ partial (printf "renderer/%s" $params.renderer) (merge $params (dict "imgDict" $imagesWebP "imgDictFallback" $imagesRegular)) }}
+{{ else }}
+    {{ $sizes := partial (printf "resizer/%s" $params.resizer) $params }}
+    {{ partial (printf "renderer/%s" $params.renderer) (merge $params (dict "imgDict" $sizes)) }}
+{{ end }}
+
