@@ -1,0 +1,10 @@
+{{ if .IsNamedParams -}}
+    {{ $params := dict }}
+    {{/* Normalize by transforming all keys to lower-case: */}}
+    {{ range $k, $v := .Params -}}
+        {{ $params = $params | merge (dict (lower $k) $v) }}
+    {{- end -}}
+    {{ partial "lazyimg" $params }}
+{{- else -}}
+    {{ partial "lazyimg" (.Get 0) }}
+{{- end }}
