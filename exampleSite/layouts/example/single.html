@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- The 'no-js' class will be removed on lazyimg-setup: -->
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <title>hugo-mods: lazyimg - {{ .Title }}</title>
+  <style>
+    .container {
+      max-width: 47em;
+      margin: auto;
+      padding: 32px;
+      text-justify: newspaper;
+    }
+    img {
+      height: auto;
+      width: 100%;
+    }
+    {{ (resources.Get "lazyimg.css" | minify).Content | safeCSS }}
+  </style>
+  <script>document.documentElement.className = "js"</script>
+
+  <!-- This script basically loads laszysizes asynchronously: -->
+  {{ partial "lazyimg-setup" . }}
+</head>
+
+<body class="container">
+    <h1>{{ .Title }}</h1>
+    {{ .Content }}
+</body>
+</html>

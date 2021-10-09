@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- The 'no-js' class will be removed on lazyimg-setup: -->
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>hugo-mods: lazyimg</title>
+  <style>
+    /* Style image as you like, but note the height and width for responsiveness: */
+    img {
+      height: auto;
+      width: 100%;
+      max-width: 1920px;
+
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+    /* lazyimg.css ensures that the image is not displayed twice when the user has no-js: */
+    {{ (resources.Get "lazyimg.css" | minify).Content | safeCSS }}
+  </style>
+
+  <!-- This script basically loads laszysizes asynchronously: -->
+  {{ partial "lazyimg-setup-nojs" . }}
+</head>
+
+<body>
+  <!-- Most basic usage with single parameter that can either be a filename or resource: -->
+  {{ partial "lazyimg" "images/alps.jpg" }}
+
+  <!-- Here we call the partial by passing a param dict that overrides the site's params: -->
+  {{ partial "lazyimg" (dict "img" "images/alps.jpg" "class" "my-fancy-class" "alt" "This image shows the alps" "resizer" "simple") }}
+
+  {{ $images := (partial "images" .) }}
+  {{ range $images  -}}
+        <!-- Here we call the partial with a resource: -->
+        {{ partial "lazyimg" . }}
+  {{- end }}
+</body>
+</html>
