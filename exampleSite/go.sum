@@ -1,2 +1,4 @@
-github.com/hugo-mods/examples v0.0.0-20210918100042-096b10688d16 h1:BbDo6KhO4PE0uaKHh+kGjmMD7GS/F04BAAJMOHmqo50=
-github.com/hugo-mods/examples v0.0.0-20210918100042-096b10688d16/go.mod h1:Eahgu172rg657c3pNNTPgm+UuYkNF9HLLRg5ETfYvOM=
+github.com/aFarkas/lazysizes v0.0.0-20210517092641-1523a4ff4579 h1:K8ukOfj0MOBEWWsL8Mzd8GXIbAf7/RHnX1hipqbjeto=
+github.com/aFarkas/lazysizes v0.0.0-20210517092641-1523a4ff4579/go.mod h1:xl3heUINAn0oPowV1biDQ2Pyw1w3x66I7KEbWkaxox0=
+github.com/hugo-mods/examples v0.0.0-20210920200831-fbe466dcbab5 h1:L0f1VLvqKVVZvn5Xf81dpfemo5lFUt8glZpifUs/fVs=
+github.com/hugo-mods/examples v0.0.0-20210920200831-fbe466dcbab5/go.mod h1:Eahgu172rg657c3pNNTPgm+UuYkNF9HLLRg5ETfYvOM=
