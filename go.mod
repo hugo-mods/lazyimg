@@ -1,4 +1,4 @@
-module github.com/kdevo/hugo-mod-lazy
+module github.com/hugo-mods/lazyimg
 
 go 1.13
 
