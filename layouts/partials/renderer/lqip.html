@@ -20,6 +20,6 @@
 {{ else }}
     src="{{ $imgDict.default.Permalink }}" class="{{ $class }} lazyload" 
 {{- end -}}
-{{- with (default $imgDict.default $imgDict.lqip) }} height="{{ .Height }}" width="{{ .Width }}" {{- end -}}
+{{- with $imgDict.default }} height="{{ .Height }}" width="{{ .Width }}" {{- end -}}
 {{- if $imgDict.responsive -}}{{ with partial "renderer/_srcset" $imgDict }} data-sizes="auto" data-srcset="{{ . }}"{{- end }} {{- end -}}
 {{- with $alt }} alt="{{ . }}" {{- end }}>
