@@ -1,0 +1,11 @@
+{{ $class := .class }}
+{{ $noscriptSupport := .noscript }}
+{{ $imgDict := .imgDict }}
+{{ $imgDictFallback := .imgDictFallback }}
+
+<picture>
+  <source type="image/webp" 
+    {{- with $imgDict.default }} height="{{ .Height }}" width="{{ .Width }}" {{- end -}}
+    {{- if $imgDict.responsive -}}{{ with partial "renderer/_srcset" $imgDict }} data-sizes="auto" data-srcset="{{ . }}"{{- end }} {{- end -}}>
+    {{ partial "renderer/lqip" (merge . (dict "imgDict" $imgDictFallback)) }}
+</picture>
