@@ -1,19 +1,22 @@
-<!-- <a href=""><img alt="Logo" align="right" width="200" src="https://raw.githubusercontent.com/hugo-mods/lazy/main/.github/logo.png"></a> -->
+<!-- <a href=""><img alt="Logo" align="right" width="200" src="https://raw.githubusercontent.com/hugo-mods/lazyimg/main/.github/logo.png"></a> -->
 
 # lazyimg
-## Lazy image loading made easy. With automatic image resizing and LQIP support.
+## Lazy image loading with superpowers.
 
 - Lazy loading for images via `lazySizes`
 - No-Script/No-JS safe: Fallback to browser's native method
 - Image previews: Blur-up Low Quality Image Placeholder (LQIP) technique
 - Automatic responsive image [resizing](#resizers)
-- Muldiple supported [renderers](#renderers) (e.g. LQIP with WebP support)
+- Multiple supported [renderers](#renderers) (e.g. LQIP with WebP support)
 
 > Used by the [Osprey Delight](https://github.com/kdevo/osprey-delight) theme, which directly benefits from this module!
 
-## Go get it
 
-Initialize [Hugo's mod system](https://gohugo.io/hugo-modules/) on your site:
+## Quickstart <a href="#quickstart"></a>
+
+### Go get it
+
+Initialize [Hugo's mod system](https://gohugo.io/hugo-modules/) on your site (replace username and repo):
 
 ```sh
 hugo mod init github.com/{username}/{repo}
@@ -33,7 +36,7 @@ Get the module (also upgrades existing one):
 hugo mod get -u
 ```
 
-## Quickstart 
+### Usage
 
 1. Put the images which you want to use in the `assets` directory of your project. They should be in a high resolution and will be resized automatically.
 2. Add the following boilerplate setup code to your site's `<head>`:
@@ -54,9 +57,9 @@ For more advanced usage, please refer to the [`exampleSite`](./exampleSite) for 
 
 ## Configuration
 
-See [example site's configuration file](exampleSite/config.yaml) for all options.
+Please check out the [example site's config](exampleSite/config.yaml) for all options.
 
-### Resizers
+### Resizers <a href="#resizers"></a>
 
 Allowed values for `resizer`:
 
@@ -64,9 +67,9 @@ Allowed values for `resizer`:
 |:----------------------------|-------------------------------------------------------------
 | `simple`                    | Produces default image with `maxSize`, LQIP with `lqipSize`.
 | `responsive`                | Produces default image with `maxSize`, LQIP with `lqipSize` and responsive images based on `responsiveSizes`.
-| `auto`                      | Produces default image with `maxSize`, LQIP with `lqipSize` and guesses responsive sizes based on an algorithm. Highly experimental.
+| `auto`                      | Produces default image with `maxSize`, LQIP with `lqipSize` and partitions (max. of 5) responsive sizes based on an algorithm.
 
-### Renderers
+### Renderers <a href="#renderers"></a>
 
 Allowed values for `renderer`:
 
@@ -75,7 +78,7 @@ Allowed values for `renderer`:
 | `simple`                    | Responsive image lazy-loading.
 | `lqip`                      | Responsive image lazy-loading with LQIP blur-up preview. Use with [`lazyimg.css`](#CSS).
 | `lqip-webp`                 | Responsive image lazy-loading `lqip` with additional WebP support.
-| `native`                    | [Browser-native loading](https://web.dev/browser-level-image-lazy-loading/) via `loading="lazy"`. Does not require JS. Used as fallback when `noscript` config option is true.
+| `native`                    | [Browser-native loading](https://web.dev/browser-level-image-lazy-loading/) via `loading="lazy"`. Does not require JS, used as fallback in other renderers when `noscript` is true.
 
 ### CSS
 
