@@ -17,7 +17,12 @@
     "renderer" (default "lqip" site.Params.lazyimg.renderer)
 )}}
 {{ if reflect.IsMap . }}
-    {{ $params = merge $params . }}
+    {{ $userParams := . }}
+    {{/* Normalize by transforming all keys to lower-case: */}}
+    {{ range $k, $v := $userParams -}}
+        {{ $userParams = $userParams | merge (dict (lower $k) $v) }}
+    {{- end -}}
+    {{ $params = merge $params $userParams }}
 {{ end }}
 {{ $resType := (printf "%T" $params.img) }}
 {{ if not (in $resType "resource") }}
@@ -31,7 +36,7 @@
 {{/* Special handling for WebP renderers: */}}
 {{ if in $params.renderer "webp" }}
     {{/* Override user-supplied target format */}}
-    {{ $resizeOptionsWebP := printf "%s webp" ($params.resizeOptions | replaceRE "(jpg|png|tif|bmp|gif)" "") }}
+    {{ $resizeOptionsWebP := printf "%s webp" ($params.resizeoptions | replaceRE "(jpg|png|tif|bmp|gif)" "") }}
     {{ $paramsWebP := merge $params (dict "resizeoptions" $resizeOptionsWebP) }}
     {{ $imagesWebP := partial (printf "resizer/%s" $params.resizer) $paramsWebP }}
     {{ $imagesRegular := partial (printf "resizer/%s" $params.resizer) $params }}
