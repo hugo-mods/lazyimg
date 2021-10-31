@@ -7,5 +7,5 @@
   <source type="image/webp" 
     {{- with $imgDict.default }} height="{{ .Height }}" width="{{ .Width }}" {{- end -}}
     {{- if $imgDict.responsive -}}{{ with partial "renderer/_srcset" $imgDict }} data-sizes="auto" data-srcset="{{ . }}"{{- end }} {{- end -}}>
-    {{ partial "renderer/lqip" (merge . (dict "imgDict" $imgDictFallback)) }}
+    {{ partial "renderer/simple" (merge . (dict "imgDict" $imgDictFallback)) }}
 </picture>

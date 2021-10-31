@@ -7,7 +7,7 @@
         {{ partial "renderer/native" . }}
     </noscript> 
 {{- end -}}
-<img src="{{ $imgDict.default.Permalink }}" class="{{ $class }} lazyload" 
+<img data-src="{{ $imgDict.default.Permalink }}" class="{{ $class }} lazyload" 
 {{- with $imgDict.default }} height="{{ .Height }}" width="{{ .Width }}" {{- end -}}
 {{- if $imgDict.responsive -}}{{ with partial "renderer/_srcset" $imgDict }} data-sizes="auto" data-srcset="{{ . }}"{{- end }} {{- end -}}
 {{- with $alt }} alt="{{ . }}" {{- end }}>
