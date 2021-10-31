@@ -17,9 +17,9 @@
     "renderer" (default "lqip" site.Params.lazyimg.renderer)
 )}}
 {{ if reflect.IsMap . }}
-    {{ $userParams := . }}
+    {{ $userParams := dict }}
     {{/* Normalize by transforming all keys to lower-case: */}}
-    {{ range $k, $v := $userParams -}}
+    {{ range $k, $v := . -}}
         {{ $userParams = $userParams | merge (dict (lower $k) $v) }}
     {{- end -}}
     {{ $params = merge $params $userParams }}
