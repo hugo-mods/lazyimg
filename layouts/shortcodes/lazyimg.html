@@ -1,5 +1,10 @@
-{{ if .IsNamedParams -}}
-    {{ partial "lazyimg" .Params }}
-{{- else -}}
-    {{ partial "lazyimg" (.Get 0) }}
-{{- end }}
+{{ $params := dict }}
+{{ if .IsNamedParams }}
+    {{ $params = .Params }}
+{{ else }}
+    {{ $params (dict "img" (.Get 0)) }}
+{{ end }}
+{{ if not (resources.Get $params.img) }}
+    {{ $params = merge $params (dict "img" (.Page.Resources.GetMatch $params.img)) }}
+{{ end }}
+{{ partial "lazyimg" $params }}
