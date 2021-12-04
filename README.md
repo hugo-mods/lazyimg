@@ -1,4 +1,4 @@
-<!-- <a href=""><img alt="Logo" align="right" width="200" src="https://raw.githubusercontent.com/hugo-mods/lazyimg/main/.github/logo.png"></a> -->
+<a href="https://hugo-mods.github.io/#lazyimg"><img alt="Logo" align="right" width="200" src="https://raw.githubusercontent.com/hugo-mods/lazyimg/main/.github/logo.png"></a>
 
 # lazyimg
 ## Lazy image loading with superpowers.
