@@ -24,3 +24,5 @@ Params:
     class: "my-img-class"
     alt: "My logo"
     noscript: true
+
+    errorHandler: warning-remote

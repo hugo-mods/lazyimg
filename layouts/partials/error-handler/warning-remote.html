@@ -1,0 +1,12 @@
+{{ $params := . }}
+{{ $url := .img | absURL }} 
+{{ warnf "image path './assets/%s' does not exist. trying remote get via %s" .img $url }}
+{{ $res := false }}
+{{ with $resource := resources.GetRemote $url }}
+    {{ with .Err }}
+        {{ warnf "could not get remotely: %s: %#v" .Error .Data }}
+    {{ else }}
+        {{ $res = merge $params (dict "img" $resource) }}
+    {{ end }}
+{{ end }}
+{{ return $res }}

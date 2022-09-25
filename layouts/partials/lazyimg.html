@@ -11,6 +11,7 @@
     Please ensure that image exists in ./assets directory.
 ` }}
 
+{{/* Parse and normalize input parameters: */}}
 {{ $params := merge site.Params.lazyimg (dict 
     "img" . 
     "resizer" (default "responsive" site.Params.lazyimg.resizer) 
@@ -24,25 +25,37 @@
     {{- end -}}
     {{ $params = merge $params $userParams }}
 {{ end }}
+
+{{/* Attempt to load image resource: */}}
 {{ $resType := (printf "%T" $params.img) }}
-{{ if not (in $resType "resource") }}
-    {{ $params = merge $params (dict "img" (resources.Get $params.img)) }}
-{{ end }}
-{{ if not $params.img }}
-    {{ errorf "image path ./assets/%s does not exist" $params.img }}
-    {{ warnf $usage }}
-{{ end }}
-
-{{/* Special handling for WebP renderers: */}}
-{{ if in $params.renderer "webp" }}
-    {{/* Override user-supplied target format */}}
-    {{ $resizeOptionsWebP := printf "%s webp" ($params.resizeoptions | replaceRE "(jpg|png|tif|bmp|gif)" "") }}
-    {{ $paramsWebP := merge $params (dict "resizeoptions" $resizeOptionsWebP) }}
-    {{ $imagesWebP := partial (printf "resizer/%s" $params.resizer) $paramsWebP }}
-    {{ $imagesRegular := partial (printf "resizer/%s" $params.resizer) $params }}
-    {{ partial (printf "renderer/%s" $params.renderer) (merge $params (dict "imgDict" $imagesWebP "imgDictFallback" $imagesRegular)) }}
-{{ else }}
-    {{ $sizes := partial (printf "resizer/%s" $params.resizer) $params }}
-    {{ partial (printf "renderer/%s" $params.renderer) (merge $params (dict "imgDict" $sizes)) }}
+{{ $resLoaded := in $resType "resource" }}
+{{ if not $resLoaded }}
+    {{ with $res := resources.Get $params.img }}
+        {{ $params = merge $params (dict "img" $res) }}
+        {{ $resLoaded = true }}
+    {{ end }}
 {{ end }}
 
+{{/* Handle error if not loaded yet: */}}
+{{ if not $resLoaded }}
+    {{/* Try if error-handler is able to resolve it */}}
+    {{ $params = partial (printf "error-handler/%s" site.Params.lazyimg.errorHandler) $params }}
+    {{ if $params }}
+        {{ $resLoaded = in (printf "%T" $params.img) "resource" }}
+    {{ end }}
+{{ end }}
+{{/* Only proceed if resource has been loaded: */}}
+{{ if $resLoaded }}
+    {{/* Special handling for WebP renderers: */}}
+    {{ if in $params.renderer "webp" }}
+        {{/* Override user-supplied target format */}}
+        {{ $resizeOptionsWebP := printf "%s webp" ($params.resizeoptions | replaceRE "(jpg|png|tif|bmp|gif)" "") }}
+        {{ $paramsWebP := merge $params (dict "resizeoptions" $resizeOptionsWebP) }}
+        {{ $imagesWebP := partial (printf "resizer/%s" $params.resizer) $paramsWebP }}
+        {{ $imagesRegular := partial (printf "resizer/%s" $params.resizer) $params }}
+        {{ partial (printf "renderer/%s" $params.renderer) (merge $params (dict "imgDict" $imagesWebP "imgDictFallback" $imagesRegular)) }}
+    {{ else }}
+        {{ $sizes := partial (printf "resizer/%s" $params.resizer) $params }}
+        {{ partial (printf "renderer/%s" $params.renderer) (merge $params (dict "imgDict" $sizes)) }}
+    {{ end }}
+{{ end }}
